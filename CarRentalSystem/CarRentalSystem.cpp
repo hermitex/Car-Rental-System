@@ -63,7 +63,7 @@ void registerUser() {
 	normal_user_password << userPassword;
 	std::cout << "Enter user deposit: ";
 	std::cin >> userDeposit;
-	normal_user_deposit << userDeposit;
+	//normal_user_deposit << userDeposit;
 
 	std::cout << doubleNewLine << "Customer's added to the system successfully!" << doubleNewLine;
 	std::cout << "Details" << singleNewLine;
