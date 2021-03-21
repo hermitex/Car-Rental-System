@@ -12,6 +12,8 @@ std::ifstream admin_name("adminusername.txt");
 
 std::ifstream admin_password("adminpassword.txt");
 
+
+
 //Normal User DB
 
 std::ofstream normal_user_name("username.txt", std::ios::app);
