@@ -8,5 +8,6 @@
 #include <ostream>
 #include <string>
 #include <fstream>
+#include <vector>
 
 // TODO: Reference additional headers your program requires here.

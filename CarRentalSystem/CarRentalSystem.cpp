@@ -224,15 +224,17 @@ bool isOldPasswordCorrect(int oldPassword, std::istream& userpasswordDb)
 }
 
 /**********************************************************************************************//**
- * @fn	void changeAdminPassword()
+ * @fn	void changePassword(std::string passwordDb)
  *
- * @brief	Change admin password
+ * @brief	Change password
  *
  * @author	User
  * @date	4/2/2021
+ *
+ * @param 	passwordDb	The password database.
  **************************************************************************************************/
 
-void changeAdminPassword()
+void changePassword(std::string passwordDb)
 {
     int oldPassword = 0;
     int newPassword = 0;
@@ -246,9 +248,9 @@ void changeAdminPassword()
     {
         std::ofstream ofs;
 
-        ofs.open("adminpassword.txt", std::ios::out | std::ios::trunc);
+        ofs.open(passwordDb, std::ios::out | std::ios::trunc);
         ofs.close();
-        std::ofstream admin_password_copy("adminpassword.txt", std::ios::app);
+        std::ofstream admin_password_copy(passwordDb, std::ios::app);
 
         admin_password_copy << newPassword;
 
@@ -262,6 +264,19 @@ void changeAdminPassword()
 }
 
 /**********************************************************************************************//**
+ * @fn	void changeAdminPassword()
+ *
+ * @brief	Change admin password
+ *
+ * @author	User
+ * @date	4/2/2021
+ **************************************************************************************************/
+
+void changeAdminPassword(){
+    changePassword("adminpassword.txt");
+}
+
+/**********************************************************************************************//**
  * @fn	void viewUserPersonalProfile()
  *
  * @brief	View user profile
@@ -271,10 +286,10 @@ void changeAdminPassword()
  **************************************************************************************************/
 
 void viewUserPersonalProfile()
-{    
+{
     std::string currentCar = " ";
     std::string name = " ";
-    int balance = 0;    
+    int balance = 0;
     int password = 0;
     std::ifstream normal_user_name("username.txt", std::ios::app);
     std::ifstream normal_user_password("userpassword.txt", std::ios::app);
@@ -284,6 +299,8 @@ void viewUserPersonalProfile()
     while (normal_user_password >> password);
     while (normal_user_deposit >> balance);
 
+    std::cout <<doubleNewLine;
+    std::cout << "Hello, " << name <<"!This is your profile"<< doubleNewLine;
     std::cout << dashes << doubleNewLine;
     std::cout << stars << doubleNewLine;
     std::cout << "Name: " << name << doubleNewLine;
@@ -293,6 +310,27 @@ void viewUserPersonalProfile()
     std::cout << dashes << doubleNewLine;
     std::cout << stars << doubleNewLine;
 
+}
+
+/**********************************************************************************************//**
+ * @fn	void recordRequestedCar(std::string car, std::string renterName)
+ *
+ * @brief	Record requested car
+ *
+ * @author	User
+ * @date	4/2/2021
+ *
+ * @param 	car		  	The car.
+ * @param 	renterName	Name of the renter.
+ **************************************************************************************************/
+
+void recordRequestedCar(std::string car, std::string renterName){
+    /** @brief	The rented cars */
+    std::ofstream rented_cars("rentedCars.txt", std::ios::app);
+    /** @brief	. */
+    rented_cars << car << "\n";
+    /** @brief	. */
+    rented_cars << renterName;
 }
 
 /**********************************************************************************************//**
@@ -306,7 +344,44 @@ void viewUserPersonalProfile()
 
 void  requestToRentCar()
 {
+    std::ifstream normal_user_name("username.txt", std::ios::app);
+    std::string name = " ";
+    while(normal_user_name >> name);
+    std::string renterName  = name;
+    std::vector<std::string> cars = {};
+    int option = 0;
+    std::string selectedCar = " ";
+    int count = 1;
+    std::string car = " ";
+    std::ifstream cars_db("carsDB.txt", std::ios::app);
 
+    while (cars_db)
+    {
+        if (std::getline(cars_db, car))
+        {
+            cars.push_back(car);
+            std::cout << count << ". " << car;
+            count++;
+        }
+        std::cout << singleNewLine;
+    }
+
+    std::cout << "Make a Selection: ";
+
+    if( std::cin >> option && (option != -1 && option <= cars.size()))
+    {
+        option--;
+        selectedCar = cars[option];
+        std::cout << doubleNewLine << "Success!" << doubleNewLine;
+        std::cout <<"You have requested to borrow a " << selectedCar << doubleNewLine;
+        std::cout << "Your request will be granted shortly" << doubleNewLine;
+    }
+    else
+    {
+        std::cout << doubleNewLine << "We do not have that car in our collection" << doubleNewLine;
+    }
+
+    recordRequestedCar(selectedCar, renterName);
 }
 
 /**********************************************************************************************//**
@@ -320,7 +395,7 @@ void  requestToRentCar()
 
 void changeUserPassword()
 {
-
+    changePassword("userpassword.txt");
 }
 
 /**********************************************************************************************//**
