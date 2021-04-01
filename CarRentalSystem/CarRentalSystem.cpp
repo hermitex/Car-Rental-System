@@ -224,15 +224,17 @@ bool isOldPasswordCorrect(int oldPassword, std::istream& userpasswordDb)
 }
 
 /**********************************************************************************************//**
- * @fn	void changeAdminPassword()
+ * @fn	void changePassword(std::string passwordDb)
  *
- * @brief	Change admin password
+ * @brief	Change password
  *
  * @author	User
  * @date	4/2/2021
+ *
+ * @param 	passwordDb	The password database.
  **************************************************************************************************/
 
-void changeAdminPassword()
+void changePassword(std::string passwordDb)
 {
     int oldPassword = 0;
     int newPassword = 0;
@@ -246,9 +248,9 @@ void changeAdminPassword()
     {
         std::ofstream ofs;
 
-        ofs.open("adminpassword.txt", std::ios::out | std::ios::trunc);
+        ofs.open(passwordDb, std::ios::out | std::ios::trunc);
         ofs.close();
-        std::ofstream admin_password_copy("adminpassword.txt", std::ios::app);
+        std::ofstream admin_password_copy(passwordDb, std::ios::app);
 
         admin_password_copy << newPassword;
 
@@ -259,6 +261,19 @@ void changeAdminPassword()
     {
         std::cout << "The current password does not match what we have.";
     }
+}
+
+/**********************************************************************************************//**
+ * @fn	void changeAdminPassword()
+ *
+ * @brief	Change admin password
+ *
+ * @author	User
+ * @date	4/2/2021
+ **************************************************************************************************/
+
+void changeAdminPassword(){
+    changePassword("adminpassword.txt");
 }
 
 /**********************************************************************************************//**
@@ -297,9 +312,24 @@ void viewUserPersonalProfile()
 
 }
 
+/**********************************************************************************************//**
+ * @fn	void recordRequestedCar(std::string car, std::string renterName)
+ *
+ * @brief	Record requested car
+ *
+ * @author	User
+ * @date	4/2/2021
+ *
+ * @param 	car		  	The car.
+ * @param 	renterName	Name of the renter.
+ **************************************************************************************************/
+
 void recordRequestedCar(std::string car, std::string renterName){
+    /** @brief	The rented cars */
     std::ofstream rented_cars("rentedCars.txt", std::ios::app);
+    /** @brief	. */
     rented_cars << car << "\n";
+    /** @brief	. */
     rented_cars << renterName;
 }
 
@@ -365,7 +395,7 @@ void  requestToRentCar()
 
 void changeUserPassword()
 {
-
+    changePassword("userpassword.txt");
 }
 
 /**********************************************************************************************//**
@@ -374,7 +404,6 @@ void changeUserPassword()
  * @brief	Returns rented car
  *
  * @author	User
- *
  * @date	4/2/2021
  **************************************************************************************************/
 
