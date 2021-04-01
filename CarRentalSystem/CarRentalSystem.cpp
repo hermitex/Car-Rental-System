@@ -271,10 +271,10 @@ void changeAdminPassword()
  **************************************************************************************************/
 
 void viewUserPersonalProfile()
-{    
+{
     std::string currentCar = " ";
     std::string name = " ";
-    int balance = 0;    
+    int balance = 0;
     int password = 0;
     std::ifstream normal_user_name("username.txt", std::ios::app);
     std::ifstream normal_user_password("userpassword.txt", std::ios::app);
@@ -284,6 +284,8 @@ void viewUserPersonalProfile()
     while (normal_user_password >> password);
     while (normal_user_deposit >> balance);
 
+    std::cout <<doubleNewLine;
+    std::cout << "Hello, " << name <<"!This is your profile"<< doubleNewLine;
     std::cout << dashes << doubleNewLine;
     std::cout << stars << doubleNewLine;
     std::cout << "Name: " << name << doubleNewLine;
@@ -293,6 +295,12 @@ void viewUserPersonalProfile()
     std::cout << dashes << doubleNewLine;
     std::cout << stars << doubleNewLine;
 
+}
+
+void recordRequestedCar(std::string car, std::string renterName){
+    std::ofstream rented_cars("rentedCars.txt", std::ios::app);
+    rented_cars << car << "\n";
+    rented_cars << renterName;
 }
 
 /**********************************************************************************************//**
@@ -306,7 +314,44 @@ void viewUserPersonalProfile()
 
 void  requestToRentCar()
 {
+    std::ifstream normal_user_name("username.txt", std::ios::app);
+    std::string name = " ";
+    while(normal_user_name >> name);
+    std::string renterName  = name;
+    std::vector<std::string> cars = {};
+    int option = 0;
+    std::string selectedCar = " ";
+    int count = 1;
+    std::string car = " ";
+    std::ifstream cars_db("carsDB.txt", std::ios::app);
 
+    while (cars_db)
+    {
+        if (std::getline(cars_db, car))
+        {
+            cars.push_back(car);
+            std::cout << count << ". " << car;
+            count++;
+        }
+        std::cout << singleNewLine;
+    }
+
+    std::cout << "Make a Selection: ";
+
+    if( std::cin >> option && (option != -1 && option <= cars.size()))
+    {
+        option--;
+        selectedCar = cars[option];
+        std::cout << doubleNewLine << "Success!" << doubleNewLine;
+        std::cout <<"You have requested to borrow a " << selectedCar << doubleNewLine;
+        std::cout << "Your request will be granted shortly" << doubleNewLine;
+    }
+    else
+    {
+        std::cout << doubleNewLine << "We do not have that car in our collection" << doubleNewLine;
+    }
+
+    recordRequestedCar(selectedCar, renterName);
 }
 
 /**********************************************************************************************//**
@@ -329,6 +374,7 @@ void changeUserPassword()
  * @brief	Returns rented car
  *
  * @author	User
+ *
  * @date	4/2/2021
  **************************************************************************************************/
 
