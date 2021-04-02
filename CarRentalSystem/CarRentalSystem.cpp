@@ -190,9 +190,28 @@ bool isValidRenter(std::istream& userDepositdDb)
  * @date	4/2/2021
  **************************************************************************************************/
 
-void approveUserCarRequest(std::string requestedCars)
+void approveUserCarRequest(std::string cars)
 {
-   
+    std::vector <std::vector <std::string>> requestedCars = {};
+    std::vector <std::string> requestedCar = {};
+    std::ifstream cars_db(cars, std::ios::app);
+    requestedCar = showCars(cars_db);
+
+    for (std::string car : requestedCar) {
+        for (int i = 0; i < 2; i++) {
+            requestedCars[i][0] = car;
+            requestedCars[i][1] = car;
+        }
+    }
+
+
+    std::cout << doubleNewLine << "Requested Cars" << doubleNewLine;
+
+    std::cout << "Car Name: " << requestedCars[0][0] << doubleNewLine;
+    std::cout << "Car Name: " << requestedCars[0][1] << doubleNewLine;
+
+
+    
 }
 
 /**********************************************************************************************//**
