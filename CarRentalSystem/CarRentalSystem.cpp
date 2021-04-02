@@ -272,7 +272,8 @@ void changePassword(std::string passwordDb)
  * @date	4/2/2021
  **************************************************************************************************/
 
-void changeAdminPassword(){
+void changeAdminPassword()
+{
     changePassword("adminpassword.txt");
 }
 
@@ -300,7 +301,7 @@ void viewUserPersonalProfile()
     while (normal_user_deposit >> balance);
 
     std::cout <<doubleNewLine;
-    std::cout << "Hello, " << name <<"!This is your profile"<< doubleNewLine;
+    std::cout << "Hello, " << name <<"! This is your profile"<< doubleNewLine;
     std::cout << dashes << doubleNewLine;
     std::cout << stars << doubleNewLine;
     std::cout << "Name: " << name << doubleNewLine;
@@ -324,13 +325,14 @@ void viewUserPersonalProfile()
  * @param 	renterName	Name of the renter.
  **************************************************************************************************/
 
-void recordRequestedCar(std::string car, std::string renterName){
+void recordRequestedCar(std::string car, std::string renterName)
+{
     /** @brief	The rented cars */
     std::ofstream rented_cars("rentedCars.txt", std::ios::app);
     /** @brief	. */
     rented_cars << car << "\n";
     /** @brief	. */
-    rented_cars << renterName;
+    rented_cars << renterName << "\n";
 }
 
 /**********************************************************************************************//**
@@ -368,7 +370,7 @@ void  requestToRentCar()
 
     std::cout << "Make a Selection: ";
 
-    if( std::cin >> option && (option != -1 && option <= cars.size()))
+    if( std::cin >> option && (option >= 1 && option <= cars.size()))
     {
         option--;
         selectedCar = cars[option];
