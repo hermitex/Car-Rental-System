@@ -42,7 +42,21 @@ bool isDatabaseReady(std::ifstream& usernameDb, std::ifstream& passwordDb)
     return databaseStatus;
 }
 
-std::vector<std::string> showCars(std::ifstream& cars_db) {
+/**********************************************************************************************//**
+ * @fn	std::vector<std::string> showCars(std::ifstream& cars_db)
+ *
+ * @brief	Shows the cars
+ *
+ * @author	User
+ * @date	4/2/2021
+ *
+ * @param [in,out]	cars_db	The cars database.
+ *
+ * @returns	A std::vector&lt;std::string&gt;
+ **************************************************************************************************/
+
+std::vector<std::string> showCars(std::ifstream& cars_db)
+{
     int count = 1;
     std::string car = " ";
     std::vector<std::string> cars = {};
@@ -157,15 +171,13 @@ void registerUser()
 }
 
 /**********************************************************************************************//**
- * @fn	bool isValidRenter(std::istream& usernameDb, std::istream& userpasswordDb, std::istream& userDepositdDb)
+ * @fn	bool isValidRenter(std::istream& userDepositdDb)
  *
  * @brief	Query if 'usernameDb' is valid renter
  *
  * @author	User
  * @date	4/2/2021
  *
- * @param [in,out]	usernameDb	  	The username database.
- * @param [in,out]	userpasswordDb	The userpassword database.
  * @param [in,out]	userDepositdDb	The user deposit database.
  *
  * @returns	True if valid renter, false if not.
@@ -175,9 +187,9 @@ bool isValidRenter(std::istream& userDepositdDb)
 {
     int confirm_deposit = 0;
 
-    while (userDepositdDb >> confirm_deposit);  
+    while (userDepositdDb >> confirm_deposit);
 
-    return confirm_deposit >= 10500 ? true : false;
+    return confirm_deposit >= 105000 ? true : false;
 
 }
 
@@ -188,30 +200,47 @@ bool isValidRenter(std::istream& userDepositdDb)
  *
  * @author	User
  * @date	4/2/2021
+ *
+ * ### param 	cars	The cars.
  **************************************************************************************************/
 
-void approveUserCarRequest(std::string cars)
+void approveUserCarRequest(/*std::string cars*/)
 {
+    //std::ifstream requestedCarsDb("requestedCars.txt", std::ios::app);
     std::vector <std::vector <std::string>> requestedCars = {};
     std::vector <std::string> requestedCar = {};
-    std::ifstream cars_db(cars, std::ios::app);
-    requestedCar = showCars(cars_db);
+    std::ifstream cars_db("requestedCars.txt", std::ios::app);
+    int balance = 0;
+    int action;
 
-    for (std::string car : requestedCar) {
-        for (int i = 0; i < 2; i++) {
-            requestedCars[i][0] = car;
-            requestedCars[i][1] = car;
+    while(normal_user_deposit_copy >> balance)
+
+
+        //requestedCar = showCars(cars_db);
+
+
+    std::cout << singleNewLine << "Car Requests" << doubleNewLine;
+    std::cout << singleTab << "Car Name: " << requestedCar[0] << doubleNewLine;
+    std::cout << singleTab << "Renter: " <<  requestedCar[1]  << doubleNewLine;
+    std::cout  << singleTab<< "Balance: " << balance  << doubleNewLine;
+
+
+    std::cout << "Actions" << doubleNewLine;
+    std::cout  << singleTab<< "1. Approve" << singleNewLine;
+    std::cout  << singleTab<< "2. Decline" << singleNewLine;
+    std::cout << "Choose Action to continue: ";
+    if(std::cin >> action)
+    {
+        if(action == 1)
+        {
+            std::cout << "Request approved!" << doubleNewLine;
         }
-    }
+        else
+        {
+            std::cout << "Request denied!" << doubleNewLine;
+        }
+    };
 
-
-    std::cout << doubleNewLine << "Requested Cars" << doubleNewLine;
-
-    std::cout << "Car Name: " << requestedCars[0][0] << doubleNewLine;
-    std::cout << "Car Name: " << requestedCars[0][1] << doubleNewLine;
-
-
-    
 }
 
 /**********************************************************************************************//**
@@ -314,6 +343,7 @@ void changeAdminPassword()
 
 void viewUserPersonalProfile()
 {
+
     std::string currentCar = " ";
     std::string name = " ";
     int balance = 0;
@@ -353,11 +383,11 @@ void viewUserPersonalProfile()
 
 void recordRequestedCar(std::string car, std::string renterName)
 {
-    /** @brief	The rented cars */
+    /** @brief	/** @brief	/** @brief	The rented cars */
     std::ofstream rented_cars("requestedCars.txt", std::ios::app);
-    /** @brief	. */
+    /** @brief	/** @brief	/** @brief	. */
     rented_cars << car << "\n";
-    /** @brief	. */
+    /** @brief	/** @brief	/** @brief	. */
     rented_cars << renterName << "\n";
 }
 
@@ -385,7 +415,7 @@ void  requestToRentCar()
 
 
     cars = showCars(cars_db);
-  
+
 
     std::cout << "Make a Selection: ";
 
@@ -405,9 +435,10 @@ void  requestToRentCar()
         else
         {
             int confirm_deposit = 0;
+            std::ifstream normal_user_deposit_copy("userdeposit.txt", std::ios::app);
             while (normal_user_password_copy >> confirm_deposit);
-            std::cout << "Request denied! Your balance of " << confirm_deposit 
-                << " is insufficient to borrow the " << selectedCar;
+            std::cout << "Request denied! Your balance of " << confirm_deposit
+                      << " is insufficient to borrow the " << selectedCar;
         }
     }
     else
@@ -415,7 +446,7 @@ void  requestToRentCar()
         std::cout << doubleNewLine << "We do not have that car in our collection. Select another or come back later" << doubleNewLine;
     }
 
-   
+
 
     recordRequestedCar(selectedCar, renterName);
 }
@@ -441,11 +472,13 @@ void changeUserPassword()
  *
  * @author	User
  * @date	4/2/2021
+ *
+ * ### param 	rentedCarsDb	The rented cars database.
  **************************************************************************************************/
 
-void  returnRentedCar(std::string rentedCarsDb)
+void  returnRentedCar()
 {
-
+    std::ifstream requestedCarsDb("requestedCars.txt", std::ios::app);
 
 }
 
@@ -468,35 +501,43 @@ void handleSelectedTask(int task, std::string user)
         if (task == 1 && user == "admin")
         {
             registerUser();
+            return;
         }
         else
         {
             viewUserPersonalProfile();
+            return;
         }
 
         if (task == 2 && user == "admin")
         {
-            approveUserCarRequest("rentedCars.txt");
+            approveUserCarRequest(/*"rentedCars.txt"*/);
+            return;
         }
         else
         {
             requestToRentCar();
+            return;
         }
         if (task == 3 && user == "admin")
         {
             updateSystem();
+            return;
         }
         else
         {
-            returnRentedCar("requestedCars.txt");
+            returnRentedCar();
+            return;
         }
         if (task == 4 && user == "admin")
         {
             changeAdminPassword();
+            return;
         }
         else
         {
             changeUserPassword();
+            return;
         }
     }
 
@@ -618,7 +659,7 @@ void checkUserType(int short userType)
 {
     if (userType == 1 || userType == 2)
     {
-        userType == 2 ? adminstratorLogin() : normalUserLogin();
+     return   userType == 2 ? adminstratorLogin() : normalUserLogin();
 
     }
     else
