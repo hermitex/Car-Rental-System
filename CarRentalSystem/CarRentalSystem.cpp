@@ -216,7 +216,7 @@ void approveUserCarRequest(/*std::string cars*/)
     while(normal_user_deposit_copy >> balance)
 
 
-        //requestedCar = showCars(cars_db);
+     requestedCar = showCars(cars_db);
 
 
     std::cout << singleNewLine << "Car Requests" << doubleNewLine;
@@ -254,7 +254,7 @@ void approveUserCarRequest(/*std::string cars*/)
 
 void updateSystem()
 {
-
+    //fix this
 }
 
 /**********************************************************************************************//**
@@ -346,15 +346,19 @@ void viewUserPersonalProfile()
 
     std::string currentCar = " ";
     std::string name = " ";
+
     int balance = 0;
     int password = 0;
     std::ifstream normal_user_name("username.txt", std::ios::app);
     std::ifstream normal_user_password("userpassword.txt", std::ios::app);
     std::ifstream normal_user_deposit("userdeposit.txt", std::ios::app);
+    std::ifstream rentedCar("rentedCar.txt", std::ios::app);
 
     while (normal_user_name >> name);
     while (normal_user_password >> password);
     while (normal_user_deposit >> balance);
+
+    while (normal_user_deposit >> currentCar);
 
     std::cout <<doubleNewLine;
     std::cout << "Hello, " << name <<"! This is your profile"<< doubleNewLine;
@@ -362,7 +366,7 @@ void viewUserPersonalProfile()
     std::cout << stars << doubleNewLine;
     std::cout << "Name: " << name << doubleNewLine;
     std::cout << "Balance: " << balance << doubleNewLine;
-    std::cout << "Current Car: " << doubleNewLine;
+    std::cout << "Current Car: " << currentCar << doubleNewLine;//fix it
     std::cout << "Password: " << password << doubleNewLine;
     std::cout << dashes << doubleNewLine;
     std::cout << stars << doubleNewLine;
@@ -435,6 +439,7 @@ void  requestToRentCar()
         else
         {
             int confirm_deposit = 0;
+            while (normal_user_deposit_copy >> confirm_deposit);
             std::ifstream normal_user_deposit_copy("userdeposit.txt", std::ios::app);
             while (normal_user_password_copy >> confirm_deposit);
             std::cout << "Request denied! Your balance of " << confirm_deposit
@@ -446,9 +451,7 @@ void  requestToRentCar()
         std::cout << doubleNewLine << "We do not have that car in our collection. Select another or come back later" << doubleNewLine;
     }
 
-
-
-    recordRequestedCar(selectedCar, renterName);
+        recordRequestedCar(selectedCar, renterName);
 }
 
 /**********************************************************************************************//**
@@ -479,6 +482,8 @@ void changeUserPassword()
 void  returnRentedCar()
 {
     std::ifstream requestedCarsDb("requestedCars.txt", std::ios::app);
+    //Add your code here
+    // 
 
 }
 
@@ -501,43 +506,43 @@ void handleSelectedTask(int task, std::string user)
         if (task == 1 && user == "admin")
         {
             registerUser();
-            return;
+          //  return;
         }
         else
         {
             viewUserPersonalProfile();
-            return;
+            //return;
         }
 
         if (task == 2 && user == "admin")
         {
             approveUserCarRequest(/*"rentedCars.txt"*/);
-            return;
+           // return;
         }
         else
         {
             requestToRentCar();
-            return;
+           // return;
         }
         if (task == 3 && user == "admin")
         {
             updateSystem();
-            return;
+           // return;
         }
         else
         {
             returnRentedCar();
-            return;
+           // return;
         }
         if (task == 4 && user == "admin")
         {
             changeAdminPassword();
-            return;
+          //  return;
         }
         else
         {
             changeUserPassword();
-            return;
+         //   return;
         }
     }
 
