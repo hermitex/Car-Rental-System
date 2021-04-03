@@ -12,6 +12,7 @@ std::string doubleNewLine = "\n\n";
 std::string singleTab = "\t";
 /** @brief	The dashes */
 std::string dashes = "--------------------------------------------";
+/** @brief	The stars */
 std::string stars = "********************************************";
 
 //std::string username;
