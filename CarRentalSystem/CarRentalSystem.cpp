@@ -172,10 +172,10 @@ void registerUser()
     std::cout << doubleNewLine << "*****welcome to Customer Registration System*****" << doubleNewLine;
     std::cout << "Create the Customer's username: ";
     std::cin >> userName;
-    normal_user_name << userName;
+    normal_user_name << userName << singleNewLine;
     std::cout << "Create the Customer's password: ";
     std::cin >> userPassword;
-    normal_user_password << userPassword;
+    normal_user_password << userPassword << singleNewLine;
     std::cout << "Enter user deposit: ";
     std::cin >> userDeposit;
     //normal_user_deposit << userDeposit;
@@ -208,7 +208,7 @@ bool isValidRenter(std::istream& userDepositdDb)
 
     while (userDepositdDb >> confirm_deposit);
 
-    return confirm_deposit >= 105000 ? true : false;
+    return confirm_deposit >= 10500 ? true : false;
 
 }
 
@@ -406,11 +406,11 @@ void viewUserPersonalProfile()
 
 void recordRequestedCar(std::string car, std::string renterName)
 {
-    /** @brief	/** @brief	/** @brief	/** @brief	/** @brief	The rented cars */
+    /** @brief	The rented cars */
     std::ofstream rented_cars("requestedCars.txt", std::ios::app);
-    /** @brief	/** @brief	/** @brief	/** @brief	/** @brief	. */
+
     rented_cars << car << "\n";
-    /** @brief	/** @brief	/** @brief	/** @brief	/** @brief	. */
+
     rented_cars << renterName << "\n";
 }
 
@@ -455,6 +455,8 @@ void  requestToRentCar()
             std::cout << singleTab << "Request: To borrow a " << selectedCar << doubleNewLine;
             std::cout << singleTab << "Status: " << status << doubleNewLine;
 
+            recordRequestedCar(selectedCar, renterName);
+
         }
         else
         {
@@ -471,7 +473,7 @@ void  requestToRentCar()
         std::cout << doubleNewLine << "We do not have that car in our collection. Select another or come back later" << doubleNewLine;
     }
 
-    recordRequestedCar(selectedCar, renterName);
+
 }
 
 /**********************************************************************************************//**
