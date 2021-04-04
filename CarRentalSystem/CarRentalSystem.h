@@ -9,5 +9,8 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <time.h>
 
 // TODO: Reference additional headers your program requires here.
