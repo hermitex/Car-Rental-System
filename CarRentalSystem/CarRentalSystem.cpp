@@ -254,7 +254,7 @@ void approveUserCarRequest(std::string cars)
     while(normal_user_deposit_copy >> balance)
 
 
-        requestedCar = returnArrayOfCars(cars_db);
+    requestedCar = returnArrayOfCars(cars_db);
 
     if(requestedCar.size() > 0)
     {
@@ -280,6 +280,7 @@ void approveUserCarRequest(std::string cars)
                 std::ifstream request_car_db("requestedCars.txt", std::ios::app);
                 std::ofstream rented_car_db("rentedCars.txt", std::ios::app);
                 std::ofstream datesOfApproval("approvalDate.txt", std::ios::app);
+                std::vector <std::string> updateCarCollection = {};
 
                 while(request_car_db)
                 {
@@ -299,6 +300,33 @@ void approveUserCarRequest(std::string cars)
 
                 std::cout <<" Request approved!" << doubleNewLine;
                 std::cout <<" Approval Date: " << approvalDate  << doubleNewLine;
+
+
+
+            
+                std::ifstream car_db("CarsDB.txt", std::ios::app);
+            
+
+
+                while (car_db)
+                {
+
+                    if (std::getline(car_db, car))
+                    {
+                        if(car != requestedCar[0])
+                            updateCarCollection.push_back(car);
+                    }
+
+                }
+
+                std::ofstream new_car_db("CarsDB.txt", std::ios::out | std::ios::trunc);
+                {
+                    std::ofstream new_car_db("CarsDB.txt", std::ios::app);
+                    for (std::string car : updateCarCollection) {
+                        new_car_db << car << singleNewLine;
+                    }
+                }
+               
 
             }
             else
@@ -326,6 +354,43 @@ void approveUserCarRequest(std::string cars)
 
 void updateSystem()
 {
+    std::string returnedCar;
+    int option = 0;
+    std::string car = " ";
+    std::vector <std::string> carsCollection = {};
+    std::ifstream returned_car_db("returnedCars.txt", std::ios::app);
+    std::ifstream car_db("CarsDB.txt", std::ios::app);
+
+    while (returned_car_db) {
+        if (std::getline(returned_car_db, returnedCar)) {
+            returnedCar;
+        }
+    }
+
+    std::cout << doubleNewLine << "Returned Car: " << returnedCar << doubleNewLine;
+    carsCollection = returnArrayOfCars(car_db);   
+    std::cout << "1. Yes" << doubleNewLine;
+    std::cout << "2. No" << doubleNewLine;
+    std::cout << "Return to collection? ";
+  
+    if (std::cin >> option && option > 0 && option < 3) {
+        if (option == 1) {
+            carsCollection.push_back(returnedCar);
+            std::ifstream car_db("CarsDB.txt", std::ios::out | std::ios::trunc);
+            std::ofstream new_car_db("CarsDB.txt", std::ios::app);
+            std::ifstream returned_car_db("returnedCars.txt", std::ios::out | std::ios::trunc);
+            for ( std::string car : carsCollection) {
+                new_car_db << car << singleNewLine;
+            }
+            std::cout << "Success!\nThe Car  collection has been updated.";
+        }
+        else {
+            //
+        }
+    }
+    else {
+        std::cout << "aInvalid option!";
+    }
     //fix this
 }
 
@@ -496,13 +561,13 @@ void viewUserPersonalProfile()
 
 void recordRequestedCar(std::string car, std::string renterName)
 {
-    /** @brief	/** @brief	/** @brief	The rented cars */
+    /** @brief	/** @brief	/** @brief	/** @brief	The rented cars */
     std::ofstream rented_cars("requestedCars.txt", std::ios::app);
 
-    /** @brief	/** @brief	. */
+    /** @brief	/** @brief	/** @brief	. */
     rented_cars << car << "\n";
 
-    /** @brief	/** @brief	. */
+    /** @brief	/** @brief	/** @brief	. */
     rented_cars << renterName << "\n";
 }
 
@@ -636,29 +701,38 @@ void  returnRentedCar()
     while (userBalance >> balance);
 
  
+    if (rentedCar.size() > 0) {
+        std::cout << doubleNewLine << "Return the: " << rentedCar[0] << "?" << doubleNewLine;
 
-    std::cout << doubleNewLine << "Return the: " << rentedCar[0] << "?" << doubleNewLine;
+        std::cout << "1. Yes" << singleNewLine;
+        std::cout << "2. No" << singleNewLine;
 
-    std::cout << "1. Yes" << singleNewLine;
-    std::cout << "2. No" << singleNewLine;
+        std::cout << "Enter option to continue: ";
+        if (std::cin >> option && option >= 1 && option <= 2) {
+            balance -= charge;
+            std::ifstream userBalance("userdeposit.txt", std::ios::out | std::ios::trunc);
 
-    std::cout << "Enter option to continue: ";
-    if (std::cin >> option && option >= 1 && option <= 2) {
-        balance -= charge;
-        std::ifstream userBalance("userdeposit.txt", std::ios::out | std::ios::trunc);
-
-        std::ofstream userBalancecopy("userdeposit.txt", std::ios::app);
-        userBalancecopy << balance;
-        returnTime = currentDateTime();        
-        std::cout << doubleNewLine << "You have returned the: " << rentedCar[0] << " successfully!" << doubleNewLine;
-        std::cout << doubleNewLine << "Date borrowed: " << borrowDate << doubleNewLine;
-        std::cout << doubleNewLine << "Return Time: " << returnTime << doubleNewLine;
-        std::cout << doubleNewLine << "Money Spent: " << charge << doubleNewLine;
+            std::ofstream userBalancecopy("userdeposit.txt", std::ios::app);
+            std::ofstream returned_car_db("returnedCars.txt", std::ios::app);
+            returned_car_db << rentedCar[0];
+            userBalancecopy << balance;
+            returnTime = currentDateTime();
+            std::cout << doubleNewLine << "You have returned the: " << rentedCar[0] << " successfully!" << doubleNewLine;
+            std::cout << doubleNewLine << "Date borrowed: " << borrowDate << doubleNewLine;
+            std::cout << doubleNewLine << "Return Time: " << returnTime << doubleNewLine;
+            std::cout << doubleNewLine << "Money Spent: " << charge << doubleNewLine;
 
 
-        std::ifstream  rentedCarsDb("rentedCars.txt", std::ios::out | std::ios::trunc);
-        std::ifstream approvalDate("approvalDate.txt", std::ios::out | std::ios::trunc);
+            std::ifstream  rentedCarsDb("rentedCars.txt", std::ios::out | std::ios::trunc);
+            std::ifstream approvalDate("approvalDate.txt", std::ios::out | std::ios::trunc);
+        }
     }
+    else {
+        std::cout << "You don't have a rented car at the moment.";
+
+    }
+
+   
 
 
 }
