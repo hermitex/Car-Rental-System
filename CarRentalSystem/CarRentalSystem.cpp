@@ -226,7 +226,7 @@ const std::string currentDateTime()
     time_t  now = time(0);
     struct tm  tstruct;
     char buf[80];
-    tstruct = *localtime(&now);    
+    tstruct = *localtime(&now);
     strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
 
     return buf;
@@ -298,14 +298,14 @@ void approveUserCarRequest(std::string cars)
 
                 datesOfApproval << approvalDate;
 
-                std::cout <<" Request approved!" << doubleNewLine;
-                std::cout <<" Approval Date: " << approvalDate  << doubleNewLine;
+                std::cout << doubleNewLine <<" Request approved!" << doubleNewLine;
+                std::cout << doubleNewLine <<" Approval Date: " << approvalDate  << doubleNewLine;
 
 
 
-            
+
                 std::ifstream car_db("CarsDB.txt", std::ios::app);
-            
+
 
 
                 while (car_db)
@@ -326,7 +326,7 @@ void approveUserCarRequest(std::string cars)
                         new_car_db << car << singleNewLine;
                     }
                 }
-               
+
 
             }
             else
@@ -367,30 +367,36 @@ void updateSystem()
         }
     }
 
-    std::cout << doubleNewLine << "Returned Car: " << returnedCar << doubleNewLine;
-    carsCollection = returnArrayOfCars(car_db);   
-    std::cout << "1. Yes" << doubleNewLine;
-    std::cout << "2. No" << doubleNewLine;
-    std::cout << "Return to collection? ";
-  
-    if (std::cin >> option && option > 0 && option < 3) {
-        if (option == 1) {
-            carsCollection.push_back(returnedCar);
-            std::ifstream car_db("CarsDB.txt", std::ios::out | std::ios::trunc);
-            std::ofstream new_car_db("CarsDB.txt", std::ios::app);
-            std::ifstream returned_car_db("returnedCars.txt", std::ios::out | std::ios::trunc);
-            for ( std::string car : carsCollection) {
-                new_car_db << car << singleNewLine;
+    if (returnedCar.size() > 0) {
+        std::cout << doubleNewLine << "Returned Car: " << returnedCar << doubleNewLine;
+        carsCollection = returnArrayOfCars(car_db);
+        std::cout << "1. Yes" << doubleNewLine;
+        std::cout << "2. No" << doubleNewLine;
+        std::cout << "Return to collection? ";
+
+        if (std::cin >> option && option > 0 && option < 3) {
+            if (option == 1) {
+                carsCollection.push_back(returnedCar);
+                std::ifstream car_db("CarsDB.txt", std::ios::out | std::ios::trunc);
+                std::ofstream new_car_db("CarsDB.txt", std::ios::app);
+                std::ifstream returned_car_db("returnedCars.txt", std::ios::out | std::ios::trunc);
+                for (std::string car : carsCollection) {
+                    new_car_db << car << singleNewLine;
+                }
+                std::cout << "Success!\nThe Car  collection has been updated.";
             }
-            std::cout << "Success!\nThe Car  collection has been updated.";
+            else {
+                //
+            }
         }
         else {
-            //
+            std::cout << "\aInvalid option!";
         }
     }
     else {
-        std::cout << "aInvalid option!";
+        std::cout << doubleNewLine <<"There are no returned cars. Check again later." << doubleNewLine;
     }
+
     //fix this
 }
 
@@ -688,7 +694,7 @@ void  returnRentedCar()
     int option;
     std::string car = " ";
     std::vector <std::string> rentedCar = {};
-    
+
     while (rentedCarsDb) {
         if (std::getline(rentedCarsDb, car)) {
             rentedCar.push_back(car);
@@ -700,7 +706,7 @@ void  returnRentedCar()
 
     while (userBalance >> balance);
 
- 
+
     if (rentedCar.size() > 0) {
         std::cout << doubleNewLine << "Return the: " << rentedCar[0] << "?" << doubleNewLine;
 
@@ -732,7 +738,7 @@ void  returnRentedCar()
 
     }
 
-   
+
 
 
 }
