@@ -252,14 +252,35 @@ void approveUserCarRequest(std::string cars)
     {
         if(action == 1)
         {
-            std::cout << "Request approved!" << doubleNewLine;
+            std::string car = " ";
+            std::ofstream clearFile;
+            std::vector <std::string> cars;
+            std::ifstream request_car_db("requestedCars.txt", std::ios::app);
+            std::ofstream rented_car_db("rentedCars.txt", std::ios::app);
+
+            while(request_car_db)
+            {
+
+                if (std::getline(request_car_db, car))
+                {
+                    cars.push_back(car);
+                }
+
+            }
+
+            for(std::string eachCar : cars)
+                rented_car_db << eachCar << singleNewLine;
+
+
+            std::cout << cars.size()<< " Request approved!" << doubleNewLine;
+
         }
         else
         {
             std::cout << "Request denied!" << doubleNewLine;
         }
-    };
-
+    }
+    std::ifstream("requestedCars.txt", std::ios::out |  std::ios::trunc);
 }
 
 /**********************************************************************************************//**
