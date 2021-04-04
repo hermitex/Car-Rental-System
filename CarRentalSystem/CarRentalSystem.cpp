@@ -312,13 +312,14 @@ void changePassword(std::string passwordDb)
 {
     int oldPassword = 0;
     int newPassword = 0;
+    std::ifstream admin_password_copy(passwordDb, std::ios::app);
 
     std::cout << "What is the Current password? ";
     std::cin >> oldPassword;
     std::cout << "What is the New password? ";
     std::cin >> newPassword;
 
-    if (isOldPasswordCorrect(oldPassword, admin_password))
+    if (isOldPasswordCorrect(oldPassword, admin_password_copy))
     {
         std::ofstream ofs;
 
@@ -328,8 +329,10 @@ void changePassword(std::string passwordDb)
 
         admin_password_copy << newPassword;
 
-
-        std::cout << "Password updated successfully!";
+        std::cout << doubleNewLine ;
+        std::cout << "Password updated successfully!" << doubleNewLine;
+        std::cout << "Your new password is: " << newPassword;
+        std::cout << doubleNewLine ;
     }
     else
     {
